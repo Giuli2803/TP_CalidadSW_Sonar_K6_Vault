@@ -1,0 +1,1 @@
+# TP_CalidadSW_Sonar_K6_Vault
