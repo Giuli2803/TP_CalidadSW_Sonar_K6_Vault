@@ -69,4 +69,8 @@ python program.py
 python3 program.py
 ```
 
+## Curiosidades
 
+Como dato curioso quise subir un `VAULT_TOKEN` local, por lo que no realiza ningun daño que este cargado en el repositorio pero GitHub me reboto el push con la siguiente adventencia:
+
+![Curiosidad](<Images/image_1.png>)
