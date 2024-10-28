@@ -1,4 +1,4 @@
-README K6
+
 Instalación en Linux
 
 sudo gpg -k
