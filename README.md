@@ -10,10 +10,13 @@ sudo apt-get install k6
 Opción 1 - Correr tests de carga manualmente con comandos
 
 Para test local simple:
+
 $ k6 new <nombre del archivo>.js --- Crea un script llamado <nombre del archivo>.js en el directorio actual
+
 $ k6 run <nombre del archivo>.js --- Ejecuta el script
 
 Para simular test de carga con mas de un usuario virtual y de cierta duracion, por consola:
+
 $ k6 run --vus 10 --duration 30s <nombre del archivo>.js --- Corre un test de 10 usuarios virtuales con duracion de 30s
 
 ![alt text](image.png)
