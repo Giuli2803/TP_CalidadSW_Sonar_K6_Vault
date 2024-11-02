@@ -56,7 +56,7 @@ jobs:
                 -DPASSWORD_OF_VAULT="${PASSWORD_OF_VAULT}" \
                 -DUSERNAME_OF_VAULT="${USERNAME_OF_VAULT}"
       - name: Subir ejecutable como artefacto
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
             name: ejecutable-c
             path: ./print_env_vars 
