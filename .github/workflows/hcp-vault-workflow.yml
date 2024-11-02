@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - vault
 
 jobs:
   retrieve_secrets:
@@ -17,7 +16,7 @@ jobs:
           HCP_CLIENT_ID: ${{ secrets.HCP_CLIENT_ID }}
           HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}
         run: |
-          # Obtener el token de acceso usando client_id y client_secret
+          # Obtener el token de acceso
           HCP_API_TOKEN=$(curl --location "https://auth.idp.hashicorp.com/oauth2/token" \
           --header "Content-Type: application/x-www-form-urlencoded" \
           --data-urlencode "client_id=$HCP_CLIENT_ID" \
@@ -36,13 +35,16 @@ jobs:
           --request GET \
           --header "Authorization: Bearer $HCP_API_TOKEN")
           
-          # Extraer el valor del secreto "password" y establecerlo como variable de entorno
+          # Extraer el valor de "password" y "username" y establecerlos como variables de entorno
           PASSWORD_OF_VAULT=$(echo "$SECRETS" | jq -r '.secrets[] | select(.name == "password") | .static_version.value')
+          USERNAME_OF_VAULT=$(echo "$SECRETS" | jq -r '.secrets[] | select(.name == "username") | .static_version.value')
           
-          # Exportar la variable de entorno para los siguientes pasos
+          # Exportar las variables de entorno para los siguientes pasos
           echo "PASSWORD_OF_VAULT=${PASSWORD_OF_VAULT}" >> $GITHUB_ENV
+          echo "USERNAME_OF_VAULT=${USERNAME_OF_VAULT}" >> $GITHUB_ENV
 
-      - name: Usar la variable de entorno PASSWORD_OF_VAULT
+      - name: Usar las variables de entorno PASSWORD_OF_VAULT y USERNAME_OF_VAULT
         run: |
-          # Ejemplo de uso de la variable
+          # Ejemplo de uso de las variables
           echo "La contraseña de Vault es: $PASSWORD_OF_VAULT"
+          echo "El nombre de usuario de Vault es: $USERNAME_OF_VAULT"
