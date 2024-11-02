@@ -1,0 +1,30 @@
+name: HCP Vault Access
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  get-secrets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configurar HCP API Token
+        env:
+          HCP_CLIENT_ID: ${{ secrets.HCP_CLIENT_ID }}
+          HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}
+        run: |
+          export HCP_API_TOKEN=$(curl --location "https://auth.idp.hashicorp.com/oauth2/token" \
+          --header "Content-Type: application/x-www-form-urlencoded" \
+          --data-urlencode "client_id=$HCP_CLIENT_ID" \
+          --data-urlencode "client_secret=$HCP_CLIENT_SECRET" \
+          --data-urlencode "grant_type=client_credentials" \
+          --data-urlencode "audience=https://api.hashicorp.cloud" | jq -r .access_token)
+
+      - name: Leer secretos de HCP Vault
+        run: |
+          curl --location "https://api.cloud.hashicorp.com/secrets/2023-11-28/organizations/f1c85201-1eab-48e9-a362-b1c5ded77e28/projects/e1dc2e66-8db0-4699-b7cb-c8ad82a5a51d/apps/AplicacionEnC/secrets:open" \
+          --request GET \
+          --header "Authorization: Bearer $HCP_API_TOKEN" | jq

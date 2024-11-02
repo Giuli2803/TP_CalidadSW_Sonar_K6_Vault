@@ -74,3 +74,9 @@ python3 program.py
 Como dato curioso quise subir un `VAULT_TOKEN` local, por lo que no realiza ningun daño que este cargado en el repositorio pero GitHub me reboto el push con la siguiente adventencia:
 
 ![Curiosidad](<Images/image_1.png>)
+
+
+https://portal.cloud.hashicorp.com/sign-up?product_intent=vault&_gl=1*105hpph*_gcl_aw*R0NMLjE3MTc3Nzk3MzAuQ2p3S0NBanczNHF6QmhCbUVpd0FPVVFjRnl3OXdIZlJHVmxBSG5hbDNwVkJaWi1TNTRiWnlybVhzUHpnTFI1Uzd6bWlPZFlFSDdBLUh4b0NUZzBRQXZEX0J3RQ..*_gcl_au*MjAwMDU0MTU4My4xNzEzOTI3MTQ1
+
+
+https://www.youtube.com/watch?v=exR528qMAZg
