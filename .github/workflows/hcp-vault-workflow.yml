@@ -46,14 +46,17 @@ jobs:
 
       - name: Checkout del código
         uses: actions/checkout@v2
-  
-      - name: Compilar el programa en C
-        run: |
-            gcc -o print_env_vars print_env_vars.c
-  
-      - name: Ejecutar el programa en C
+
+      - name: Compilar el programa en C con valores de secretos
         env:
-          PASSWORD_OF_VAULT: ${{ env.PASSWORD_OF_VAULT }}
-          USERNAME_OF_VAULT: ${{ env.USERNAME_OF_VAULT }}
+            PASSWORD_OF_VAULT: ${{ env.PASSWORD_OF_VAULT }}
+            USERNAME_OF_VAULT: ${{ env.USERNAME_OF_VAULT }}
         run: |
-            ./print_env_vars
+            gcc -o print_env_vars print_env_vars.c \
+                -DPASSWORD_OF_VAULT="${PASSWORD_OF_VAULT}" \
+                -DUSERNAME_OF_VAULT="${USERNAME_OF_VAULT}"
+      - name: Subir ejecutable como artefacto
+        uses: actions/upload-artifact@v2
+        with:
+            name: ejecutable-c
+            path: ./print_env_vars 
