@@ -1,29 +1,35 @@
-name: HCP Vault Access
+name: HashiCorp Cloud Secrets
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
+      - vault
 
 jobs:
-  get-secrets:
+  retrieve_secrets:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Configurar HCP API Token
+      - name: Configurar variables de entorno
         env:
           HCP_CLIENT_ID: ${{ secrets.HCP_CLIENT_ID }}
           HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}
         run: |
-          export HCP_API_TOKEN=$(curl --location "https://auth.idp.hashicorp.com/oauth2/token" \
+          # Obtener el token de acceso usando client_id y client_secret
+          HCP_API_TOKEN=$(curl --location "https://auth.idp.hashicorp.com/oauth2/token" \
           --header "Content-Type: application/x-www-form-urlencoded" \
           --data-urlencode "client_id=$HCP_CLIENT_ID" \
           --data-urlencode "client_secret=$HCP_CLIENT_SECRET" \
           --data-urlencode "grant_type=client_credentials" \
           --data-urlencode "audience=https://api.hashicorp.cloud" | jq -r .access_token)
+          
+          echo "HCP_API_TOKEN=${HCP_API_TOKEN}" >> $GITHUB_ENV
 
-      - name: Leer secretos de HCP Vault
+      - name: Obtener secretos de HashiCorp Cloud Platform
+        env:
+          HCP_API_TOKEN: ${{ env.HCP_API_TOKEN }}
         run: |
           curl --location "https://api.cloud.hashicorp.com/secrets/2023-11-28/organizations/f1c85201-1eab-48e9-a362-b1c5ded77e28/projects/e1dc2e66-8db0-4699-b7cb-c8ad82a5a51d/apps/AplicacionEnC/secrets:open" \
           --request GET \
