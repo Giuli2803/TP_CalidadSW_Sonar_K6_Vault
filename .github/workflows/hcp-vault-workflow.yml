@@ -53,8 +53,9 @@ jobs:
             USERNAME_OF_VAULT: ${{ env.USERNAME_OF_VAULT }}
         run: |
             gcc -o print_env_vars print_env_vars.c \
-                -DPASSWORD_OF_VAULT="${PASSWORD_OF_VAULT}" \
-                -DUSERNAME_OF_VAULT="${USERNAME_OF_VAULT}"
+                -DPASSWORD_OF_VAULT="\"${PASSWORD_OF_VAULT}\"" \
+                -DUSERNAME_OF_VAULT="\"${USERNAME_OF_VAULT}\""
+                
       - name: Subir ejecutable como artefacto
         uses: actions/upload-artifact@v3
         with:
