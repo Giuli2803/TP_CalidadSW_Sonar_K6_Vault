@@ -27,10 +27,22 @@ jobs:
           
           echo "HCP_API_TOKEN=${HCP_API_TOKEN}" >> $GITHUB_ENV
 
-      - name: Obtener secretos de HashiCorp Cloud Platform
+      - name: Obtener secretos de HashiCorp Cloud Platform y establecer variables de entorno
         env:
           HCP_API_TOKEN: ${{ env.HCP_API_TOKEN }}
         run: |
-          curl --location "https://api.cloud.hashicorp.com/secrets/2023-11-28/organizations/f1c85201-1eab-48e9-a362-b1c5ded77e28/projects/e1dc2e66-8db0-4699-b7cb-c8ad82a5a51d/apps/AplicacionEnC/secrets:open" \
+          # Obtener los secretos
+          SECRETS=$(curl --location "https://api.cloud.hashicorp.com/secrets/2023-11-28/organizations/f1c85201-1eab-48e9-a362-b1c5ded77e28/projects/e1dc2e66-8db0-4699-b7cb-c8ad82a5a51d/apps/AplicacionEnC/secrets:open" \
           --request GET \
-          --header "Authorization: Bearer $HCP_API_TOKEN" | jq
+          --header "Authorization: Bearer $HCP_API_TOKEN")
+          
+          # Extraer el valor del secreto "password" y establecerlo como variable de entorno
+          PASSWORD_OF_VAULT=$(echo "$SECRETS" | jq -r '.secrets[] | select(.name == "password") | .static_version.value')
+          
+          # Exportar la variable de entorno para los siguientes pasos
+          echo "PASSWORD_OF_VAULT=${PASSWORD_OF_VAULT}" >> $GITHUB_ENV
+
+      - name: Usar la variable de entorno PASSWORD_OF_VAULT
+        run: |
+          # Ejemplo de uso de la variable
+          echo "La contraseña de Vault es: $PASSWORD_OF_VAULT"
