@@ -49,8 +49,9 @@ jobs:
           # Ejemplo de uso de las variables
           echo "La contraseña de Vault es: $PASSWORD_OF_VAULT"
           echo "El nombre de usuario de Vault es: $USERNAME_OF_VAULT"
-          - name: Checkout del código
-          uses: actions/checkout@v2
+     
+      - name: Checkout del código
+        uses: actions/checkout@v2
   
       - name: Compilar el programa en C
         run: |
@@ -59,4 +60,4 @@ jobs:
       - name: Ejecutar el programa en C
         run: |
             ./print_env_vars
-            
+
