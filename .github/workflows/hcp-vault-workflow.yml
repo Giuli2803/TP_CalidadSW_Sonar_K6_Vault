@@ -57,9 +57,3 @@ jobs:
           USERNAME_OF_VAULT: ${{ env.USERNAME_OF_VAULT }}
         run: |
             ./print_env_vars
-
-      - name: Guardar el ejecutable como artefacto
-        uses: actions/upload-artifact@v3
-        with:
-            name: print_env_vars_executable
-            path: ./print_env_vars
