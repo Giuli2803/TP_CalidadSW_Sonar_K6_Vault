@@ -44,12 +44,6 @@ jobs:
           echo "PASSWORD_OF_VAULT=${PASSWORD_OF_VAULT}" >> $GITHUB_ENV
           echo "USERNAME_OF_VAULT=${USERNAME_OF_VAULT}" >> $GITHUB_ENV
 
-      - name: Usar las variables de entorno PASSWORD_OF_VAULT y USERNAME_OF_VAULT
-        run: |
-          # Ejemplo de uso de las variables
-          echo "La contraseña de Vault es: $PASSWORD_OF_VAULT"
-          echo "El nombre de usuario de Vault es: $USERNAME_OF_VAULT"
-     
       - name: Checkout del código
         uses: actions/checkout@v2
   
@@ -58,6 +52,9 @@ jobs:
             gcc -o print_env_vars print_env_vars.c
   
       - name: Ejecutar el programa en C
+        env:
+          PASSWORD_OF_VAULT: ${{ env.PASSWORD_OF_VAULT }}
+          USERNAME_OF_VAULT: ${{ env.USERNAME_OF_VAULT }}
         run: |
             ./print_env_vars
 
